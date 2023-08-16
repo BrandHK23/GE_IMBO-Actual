@@ -9,11 +9,11 @@ import java.util.Calendar;
 import java.util.List;
 
 public class AlumnoDao {
-    private final String BASE_DE_DATOS = "IMBO_DB"; // Reemplazar con el nombre de tu base de datos
-    private final String USUARIO = "root"; // Reemplazar con el usuario de tu base de datos
-    private final String PASSWORD = "2301"; // Reemplazar con la contraseña de tu base de datos - CAMBIAR CONTRASEÑA A 1234
-    private final String HOST = "localhost"; // Reemplazar con el host de tu base de datos
-    private final String PUERTO = "3306"; // Reemplazar con el puerto de tu base de datos
+    private final String BASE_DE_DATOS = "IMBO_DB"; 
+    private final String USUARIO = "root"; 
+    private final String PASSWORD = "2301"; 
+    private final String HOST = "localhost"; 
+    private final String PUERTO = "3306"; 
 
     private final String URL_CONEXION = "jdbc:mysql://" + HOST + ":" + PUERTO + "/" + BASE_DE_DATOS + "?useSSL=false";
 
