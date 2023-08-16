@@ -8,11 +8,11 @@ import java.util.List;
 
 public class RegistroDao {
     public Connection conectar() {
-        String baseDeDatos = "IMBO_DB"; // Reemplazar con el nombre de tu base de datos
-        String usuario = "root"; // Reemplazar con el usuario de tu base de datos
-        String password = "2301"; // Reemplazar con la contraseña de tu base de datos
-        String host = "localhost"; // Reemplazar con el host de tu base de datos
-        String puerto = "3306"; // Reemplazar con el puerto de tu base de datos
+        String baseDeDatos = "IMBO_DB"; 
+        String usuario = "root"; 
+        String password = "2301";
+        String host = "localhost"; 
+        String puerto = "3306"; 
         String drive = "com.mysql.cj.jdbc.Driver";
         String conexionUrl = "jdbc:mysql://" + host + ":" + puerto + "/" + baseDeDatos + "?useSSL=false";
 
