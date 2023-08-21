@@ -53,7 +53,7 @@ public class RegistroDao {
     }
 
     //Consultar todos los registros
-        public List<Registro> obtenerTodosRegistros() {
+    public List<Registro> obtenerTodosRegistros() {
         List<Registro> registros = new ArrayList<>();
         try {
             Connection conexion = conectar();
