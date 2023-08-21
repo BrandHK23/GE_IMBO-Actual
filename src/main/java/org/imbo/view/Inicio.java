@@ -1,6 +1,7 @@
 package org.imbo.view;
 
 import org.imbo.view.inicioPanel.AlumnosPanel.AlumnosPanel;
+import org.imbo.view.inicioPanel.PacientesPanel;
 import org.imbo.view.inicioPanel.RegistroPanel.RegistrosPanel;
 
 import javax.swing.*;
@@ -23,12 +24,14 @@ public class Inicio extends JFrame {
         // Create panels for Alumnos, Profesores, and Calendarios functions
         RegistrosPanel panelRegistros = new RegistrosPanel(); // Create an instance of RegistroPanel
         AlumnosPanel panelAlumnos = new AlumnosPanel(); // Crear una instancia de AlumnosPanel
+        PacientesPanel panelPaciente = new PacientesPanel();
         JPanel panelProfesores = new JPanel();
         JPanel panelCalendarios = new JPanel();
 
         // Add the panels to the JTabbedPane with tab titles
         tabbedPane.addTab("Alumnos", panelAlumnos); // Agregar el panel de Alumnos a la pestaña
         tabbedPane.addTab("Registros", panelRegistros);
+        tabbedPane.addTab("Pacientes", panelPaciente);
         tabbedPane.addTab("Profesores", panelProfesores);
         tabbedPane.addTab("Calendarios", panelCalendarios);
 

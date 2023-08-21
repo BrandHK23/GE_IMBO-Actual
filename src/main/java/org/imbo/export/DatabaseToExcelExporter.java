@@ -158,4 +158,59 @@ public class DatabaseToExcelExporter {
                 return "";
         }
     }
+    public void exportarPacientes(String excelFilePath) {
+        try (Connection conexion = conectar();
+             Statement statement = conexion.createStatement();
+             ResultSet result = statement.executeQuery("SELECT * FROM Paciente")) {
+
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Datos Pacientes");
+            int rowNum = 0;
+
+            ResultSetMetaData metaData = result.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            // Agregar fila de encabezado con los nombres de las columnas
+            Row headerRow = sheet.createRow(rowNum++);
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = metaData.getColumnName(i);
+                headerRow.createCell(i - 1).setCellValue(columnName);
+            }
+
+            // Agregar los datos de cada fila
+            while (result.next()) {
+                Row row = sheet.createRow(rowNum++);
+                for (int i = 1; i <= columnCount; i++) {
+                    Object value = result.getObject(i);
+                    row.createCell(i - 1).setCellValue(value != null ? value.toString() : "");
+                }
+            }
+
+            // Ajustar el tamaño de las celdas al contenido
+            for (int i = 0; i < columnCount; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Generar el nombre de archivo con versión
+            int version = 1;
+            String newFileName = "Pacientes.xlsx";
+            File archivo = new File(excelFolder + File.separator + newFileName);
+            while (archivo.exists()) {
+                // Generar nuevo nombre de archivo añadiendo la versión
+                version++;
+                newFileName = String.format("%s (%d).xlsx", "Pacientes".substring(0, "Pacientes".lastIndexOf('.')), version);
+                archivo = new File(excelFolder + File.separator + newFileName);
+            }
+
+            // Crear el archivo en la ruta especificada
+            try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {
+                workbook.write(outputStream);
+            }
+
+            System.out.println(newFileName + " exportado correctamente a Excel.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
