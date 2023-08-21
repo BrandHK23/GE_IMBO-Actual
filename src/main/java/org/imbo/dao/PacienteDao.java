@@ -13,7 +13,7 @@ public class PacienteDao {
     public Connection conectar() {
         String baseDeDatos = "IMBO_DB"; // Reemplazar con el nombre de tu base de datos
         String usuario = "root"; // Reemplazar con el usuario de tu base de datos
-        String password = "2301"; // Reemplazar con la contraseña de tu base de datos
+        String password = "1234"; // Reemplazar con la contraseña de tu base de datos
         String host = "localhost"; // Reemplazar con el host de tu base de datos
         String puerto = "3306"; // Reemplazar con el puerto de tu base de datos
         String drive = "com.mysql.cj.jdbc.Driver";
@@ -29,16 +29,16 @@ public class PacienteDao {
         return conexion;
     }
 
-    public void registrarPaciente(String nombre, String telefono, String correo, String motivo, String tratamiento) {
+    public void registrarPaciente(Paciente paciente) {
         Connection conexion = conectar();
         try {
             String query = "INSERT INTO Paciente (nombre_paciente, telefono, correo, motivo, tratamiento) VALUES (?, ?, ?, ?, ?)";
             java.sql.PreparedStatement preparedStmt = conexion.prepareStatement(query);
-            preparedStmt.setString(1, nombre);
-            preparedStmt.setString(2, telefono);
-            preparedStmt.setString(3, correo);
-            preparedStmt.setString(4, motivo);
-            preparedStmt.setString(5, tratamiento);
+            preparedStmt.setString(1, paciente.getNombre());
+            preparedStmt.setString(2, paciente.getTelefono());
+            preparedStmt.setString(3, paciente.getCorreo());
+            preparedStmt.setString(4, paciente.getMotivo());
+            preparedStmt.setString(5, paciente.getTratamiento());
             preparedStmt.execute();
             conexion.close();
         } catch (Exception e) {
@@ -104,5 +104,21 @@ public class PacienteDao {
             throw new RuntimeException(e);
         }
         return pacientes;
+    }
+
+    public void eliminarPaciente(int idPaciente) {
+        try{
+            Connection conexion = conectar();
+
+            String sql = "DELETE FROM Paciente WHERE id_pac = ?";
+            PreparedStatement statement = conexion.prepareStatement(sql);
+            statement.setInt(1, idPaciente);
+            statement.executeUpdate();
+
+            statement.close();
+            conexion.close();
+        } catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }

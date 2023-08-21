@@ -29,16 +29,18 @@ public class PacientesPanel  extends JPanel {
         JTextField txtNombre = new JTextField(10);
         JLabel lblTratamiento = new JLabel("Tratamiento:");
         String[] tratamientosOptions = {"", "Ortodoncia", "Endodoncia", "Ambos"};
-        JComboBox<String> cmbTratamiento = new JComboBox<>(tratamientosOptions);
+        JComboBox<String> cmbTratamientoFilter = new JComboBox<>(tratamientosOptions);
         JButton btnBuscar = new JButton("Buscar");
         JButton btnExportar = new JButton("Exportar");
+        JButton btnEliminarPaciente = new JButton("Eliminar");
 
         subPanelFiltros.add(lblNombre);
         subPanelFiltros.add(txtNombre);
         subPanelFiltros.add(lblTratamiento);
-        subPanelFiltros.add(cmbTratamiento);
+        subPanelFiltros.add(cmbTratamientoFilter);
         subPanelFiltros.add(btnBuscar);
         subPanelFiltros.add(btnExportar);
+        subPanelFiltros.add(btnEliminarPaciente);
 
         //SubPanel tabla
         JPanel subPanelTabla = new JPanel(new BorderLayout());
@@ -80,7 +82,8 @@ public class PacientesPanel  extends JPanel {
         JLabel lblMotivoPaciente = new JLabel("Motivo:");
         JTextField txtMotivoPaciente = new JTextField(10);
         JLabel lblTratamientoPaciente = new JLabel("Tratamiento:");
-        String[] tratamientosOptionsPaciente = {"", "Ortodoncia", "Endodoncia", "Ambos"};
+        String[] tratamientosOptionsPaciente = {"Ortodoncia", "Endodoncia", "Ambos"};
+        JComboBox<String> cmbTratamiento = new JComboBox<>(tratamientosOptionsPaciente);
 
         JButton btnRegistrarPaciente = new JButton("Registrar");
 
@@ -93,7 +96,7 @@ public class PacientesPanel  extends JPanel {
         subPanelRegistroPacientes.add(lblMotivoPaciente);
         subPanelRegistroPacientes.add(txtMotivoPaciente);
         subPanelRegistroPacientes.add(lblTratamientoPaciente);
-        subPanelRegistroPacientes.add(new JComboBox<>(tratamientosOptionsPaciente));
+        subPanelRegistroPacientes.add(cmbTratamiento);
         subPanelRegistroPacientes.add(btnRegistrarPaciente);
 
         //Agrega los subPaneles al panel principal
@@ -103,13 +106,21 @@ public class PacientesPanel  extends JPanel {
 
         //Configurar boton registrar
         btnRegistrarPaciente.addActionListener(e -> {
+            Paciente nuevoPaciente = new Paciente();
+
             String nombre = txtNombrePaciente.getText();
             String telefono = txtTelefonoPaciente.getText();
             String correo = txtCorreoPaciente.getText();
             String motivo = txtMotivoPaciente.getText();
             String tratamiento = (String) cmbTratamiento.getSelectedItem();
 
-            pacienteDao.registrarPaciente(nombre, telefono, correo, motivo, tratamiento);
+            nuevoPaciente.setNombre(nombre);
+            nuevoPaciente.setTelefono(telefono);
+            nuevoPaciente.setCorreo(correo);
+            nuevoPaciente.setMotivo(motivo);
+            nuevoPaciente.setTratamiento(tratamiento);
+
+            pacienteDao.registrarPaciente(nuevoPaciente);
             JOptionPane.showMessageDialog(null, "Paciente registrado correctamente");
         });
 
@@ -118,7 +129,7 @@ public class PacientesPanel  extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String nombre = txtNombre.getText();
-                String tratamiento = (String) cmbTratamiento.getSelectedItem();
+                String tratamiento = (String) cmbTratamientoFilter.getSelectedItem();
 
                 //Realizar la busqueda segundo los filtros
                 //Si no se especifica un filtro, se debe de buscar por todos los pacientes
@@ -172,6 +183,24 @@ public class PacientesPanel  extends JPanel {
                     DatabaseToExcelExporter databaseToExcelExporter = new DatabaseToExcelExporter();
                     databaseToExcelExporter.exportarPacientes(filePath);
                     JOptionPane.showMessageDialog(null, "Datos exportados correctamente");
+                }
+            }
+        });
+
+        //Configurar boton eliminar paciente
+        btnEliminarPaciente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row = table.getSelectedRow();
+                if(row == -1){
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente de la tabla.");
+                }else{
+                    int idPaciente = (int) table.getValueAt(row, 0);
+                    int confirm = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea eliminar el paciente seleccionado?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                    if(confirm == JOptionPane.YES_OPTION){
+                        pacienteDao.eliminarPaciente(idPaciente);
+                        JOptionPane.showMessageDialog(null, "Paciente eliminado correctamente.");
+                    }
                 }
             }
         });

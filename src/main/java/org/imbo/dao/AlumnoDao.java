@@ -11,7 +11,7 @@ import java.util.List;
 public class AlumnoDao {
     private final String BASE_DE_DATOS = "IMBO_DB"; 
     private final String USUARIO = "root"; 
-    private final String PASSWORD = "2301"; 
+    private final String PASSWORD = "1234";
     private final String HOST = "localhost"; 
     private final String PUERTO = "3306"; 
 
