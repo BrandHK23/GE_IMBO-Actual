@@ -15,7 +15,7 @@ public class DocAlumnoDao {
     public Connection conectar() {
         String baseDeDatos = "IMBO_DB";
         String usuario = "root";
-        String password = "1234";
+        String password = "2301";
         String host = "Localhost";
         String puerto = "3306";
         String drive = "com.mysql.cj.jdbc.Driver";
